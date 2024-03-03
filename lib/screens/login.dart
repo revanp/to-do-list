@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:todo_list/api/user.dart';
 import 'package:todo_list/screens/home.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -202,11 +202,19 @@ class _LoginFormState extends State<LoginForm> {
     var body = jsonDecode(res.body);
 
     if (body == 'Not found') {
-      Fluttertoast.showToast(
-          msg: 'Wrong username or password',
-          backgroundColor: HexColor("#E55B64"),
-          textColor: Colors.white,
-          gravity: ToastGravity.TOP);
+      // SnackBar
+      // Fluttertoast.showToast(
+      //     msg: 'Wrong username or password',
+      //     backgroundColor: HexColor("#E55B64"),
+      //     textColor: Colors.white,
+      //     gravity: ToastGravity.TOP);
+      toastification.show(
+        context: context,
+        title: Text('Wrong username or password.'),
+        autoCloseDuration: const Duration(seconds: 3),
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+      );
     } else {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('user', json.encode(body[0]));
